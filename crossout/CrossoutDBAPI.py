@@ -37,12 +37,11 @@ class CrossoutDBAPI:
 
         Raises
         ------
-        ConnectionError
-            If the request fails, namely response code is not 200
+        HTTPError
+            If the request failed
         """
         r = requests.get(self.base_url + endpoint)
-        if r.status_code != 200:
-            raise ConnectionError('Request failed with status code: ' + str(r.status_code))
+        r.raise_for_status()
         return r.json()
 
     def items(self,
