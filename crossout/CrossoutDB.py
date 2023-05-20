@@ -35,19 +35,17 @@ class CrossoutDB:
         assert r['item']['id'] == item.id
 
         items = []
-        ressources = []
-        price = 0
+        resources = []
+        workbench = Workbenches.fromName(item.rarity.name)
         
         for ing in r['ingredients']:
             if ing['item']['categoryName'] == 'Resources':
-                ressources.append(
+                resources.append(
                     (Resource(self.api.item(ing['item']['id'])), ing['number'])
                 )
-            elif ing['item']['name'].endswith('Bench Cost'):
-                price += ing['item']['buyPrice'] / 100
             else:
                 items.append(
                     (self.item(ing['item']['id']), ing['number'])
                 )
 
-        return Recipe(items, ressources, price)
+        return Recipe(items, resources, workbench, item.faction)

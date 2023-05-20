@@ -1,6 +1,6 @@
 
 
-__all__ = ['Entity', 'Item', 'Recipe', 'Resource']
+__all__ = ['Entity', 'Item', 'Recipe', 'Resource', 'Workbenches']
 
 
 class Entity:
@@ -17,7 +17,7 @@ class Entity:
     
     def __eq__(self, other) -> bool:
         if isinstance(other, Entity):
-            return self.__id == other.id and self.__name == other.__name
+            return self.__id == other.__id and self.__name == other.__name
         else:
             return False
         
@@ -41,7 +41,7 @@ class Item:
         self.type = Entity(data['typeId'], data['typeName'])
         self.faction = Entity(data['factionNumber'], data['faction'])
 
-        self.imagePath = data['imagePath']
+        self.img = data['imagePath']
 
     def __repr__(self) -> str:
         return str(self.__dict__)
@@ -53,21 +53,53 @@ class Resource:
         self.name = data['name'].replace(' x100', '')
         self.description = d if (d := data['description']) else "Not provided."
 
-        self.imagePath = data['imagePath']
+        self.img = data['imagePath']
 
     def __repr__(self) -> str:
         return str(self.__dict__)
+
+class Workbench:
+
+    def __init__(self, price: int, name: str) -> None:
+        self.price = price
+        self.name = name
+
+class Workbenches:
+
+    COMMON = Workbench(0, 'Common')
+    RARE = Workbench(3, 'Rare')
+    SPECIAL = Workbench(6, 'Special')
+    EPIC = Workbench(15, 'Epic')
+    LEGENDARY = Workbench(75, 'Legendary')
+    RELIC = Workbench(0, 'Relic')
+
+    @staticmethod
+    def fromName(name: str) -> Workbench:
+        l = [
+            Workbenches.COMMON,
+            Workbenches.RARE,
+            Workbenches.SPECIAL,
+            Workbenches.EPIC,
+            Workbenches.LEGENDARY,
+            Workbenches.RELIC
+        ]
+        for w in l:
+            if w.name == name:
+                return w
+        raise ValueError(f'No workbench with name {name}')
 
 class Recipe:
 
     def __init__(self,
                  items: list[tuple[Item, int]],
-                 ressources: list[tuple[Resource, int]],
-                 price: int
+                 resources: list[tuple[Resource, int]],
+                 workbench: Workbench,
+                 faction: Entity
                 ) -> None:
         self.items = items
-        self.ressources = ressources
-        self.price = price
+        self.resources = resources
+        self.workbench = workbench
+        self.faction = faction
 
     def __repr__(self) -> str:
         return str(self.__dict__)
