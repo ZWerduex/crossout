@@ -12,9 +12,9 @@ class Entity:
 
         Parameters
         ----------
-        id : int
+        id : `int`
             The entity's ID
-        name : str
+        name : `str`
             The entity's name
         """
         self.__id = id
@@ -38,7 +38,7 @@ class Entity:
 
         Returns
         -------
-        int
+        `int`
             The entity's ID
         """
         return self.__id
@@ -55,8 +55,13 @@ class Entity:
         return self.__name
 
 class Item:
+    """Represents an item in Crossout.
+    """
 
     def __init__(self, data: dict) -> None:
+        """Builds an item from the given data. 
+        An item should not be built manually and rather be retrieved from the `CrossoutDB` class.
+        """
         self.id = data['id']
         self.name = data['name']
         self.description = d if (d := data['description']) else "Not provided."
@@ -88,6 +93,10 @@ class Workbench:
     def __init__(self, price: int, name: str) -> None:
         self.price = price
         self.name = name
+
+    @property
+    def fullName(self) -> str:
+        return f'{self.name} Workbench'
 
 class Workbenches:
 

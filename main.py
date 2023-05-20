@@ -9,4 +9,5 @@ def toJson(obj):
 
 if __name__ == "__main__":
     api = crossout.CrossoutDB()
-    r = api.recipe(api.item(456))
+    i = api.item(456)
+    r = api.recipe(i)

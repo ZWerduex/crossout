@@ -1,4 +1,3 @@
-import typing
 import urllib.parse
 
 import requests
@@ -13,33 +12,35 @@ class CrossoutDBAPI:
     """
 
     def __init__(self, base_url : str = 'https://crossoutdb.com/api/v1/') -> None:
-        """Build the basic CrossoutAPI object.
+        """Build a `CrossoutDBAPI` object.
 
         Parameters
         ----------
-        base_url : str, optional
-            Base URL of the web API, should not require modifications
+        base_url : `str`, optional
+            Base URL of the web API, should not be modified unless the API changes
         """
         self.base_url = base_url
+        """Base URL of the web API, should not require modifications
+        """
 
     def request(self, endpoint: str) -> set[dict]:
         """Makes a request to the CrossoutDB API and returns the result in JSON format.
 
         Parameters
         ----------
-        endpoint : str
+        endpoint : `str`
             Name of the endpoint to request
 
         Returns
         -------
-        set[dict]
+        `set[dict]`
             A set of dicts retrieved from the CrossoutDB API. The set contains at least one dict.
 
         Raises
         ------
-        HTTPError
+        `HTTPError`
             If the request failed
-        TypeError
+        `TypeError`
             If the response is not JSON
         """
         r = requests.get(self.base_url + endpoint)
@@ -65,18 +66,18 @@ class CrossoutDBAPI:
 
         Parameters
         ----------
-        rarity : str, optional
+        rarity : `str`, optional
             Filters by rarity name as listed in `rarities()`
-        category : str, optional
+        category : `str`, optional
             Filters by category name as listed in `categories()`
-        faction : str, optional
+        faction : `str`, optional
             Filters by faction name as listed in `factions()`
-        query : str, optional
+        query : `str`, optional
             Filters items corresponding to the given query
 
         Returns
         -------
-        set[dict]
+        `set[dict]`
             The list of items returned by the API
         """
         params = {}
@@ -99,17 +100,17 @@ class CrossoutDBAPI:
 
         Parameters
         ----------
-        item_id : int
+        item_id : `int`
             ID of the item to retrieve
 
         Returns
         -------
-        dict
+        `dict`
             A dict containing the item data
 
         Raises
         ------
-        ValueError
+        `ValueError`
             If the item with the given ID does not exist
         """
         data = self.request('item/' + str(item_id))
@@ -123,7 +124,7 @@ class CrossoutDBAPI:
 
         Returns
         -------
-        set[dict]
+        `set[dict]`
             The set of rarities
         """
         return self.request('rarities')
@@ -133,7 +134,7 @@ class CrossoutDBAPI:
 
         Returns
         -------
-        set[dict]
+        `set[dict]`
             The set of item categories
         """
         return self.request('categories')
@@ -143,7 +144,7 @@ class CrossoutDBAPI:
 
         Returns
         -------
-        set[dict]
+        `set[dict]`
             The set of factions
         """
         return self.request('factions')
@@ -153,27 +154,27 @@ class CrossoutDBAPI:
 
         Returns
         -------
-        set[dict]
+        `set[dict]`
             The set of item types
         """
         return self.request('types')
     
     def recipe(self, item_id: int) -> dict:
-        """Returns the recipe for the given item.
+        """Queries the CrossoutDB API for the given item's recipe.
 
         Parameters
         ----------
-        item_id : int
+        item_id : `int`
             ID of the item's recipe to retrieve
 
         Returns
         -------
-        dict 
+        `dict` 
             A containing the recipe data
 
         Raises
         ------
-        ValueError
+        `ValueError`
             If the recipe with the given ID does not exist
         """
         # Empty JSON response
