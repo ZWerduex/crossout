@@ -4,8 +4,19 @@ __all__ = ['Entity', 'Item', 'Recipe', 'Resource', 'Workbenches']
 
 
 class Entity:
+    """Represents an entity with an ID and a name. Used for rarities, categories, factions and types.
+    """
 
     def __init__(self, id: int, name: str) -> None:
+        """Builds an entity with the given ID and name
+
+        Parameters
+        ----------
+        id : int
+            The entity's ID
+        name : str
+            The entity's name
+        """
         self.__id = id
         self.__name = name
 
@@ -23,10 +34,24 @@ class Entity:
         
     @property
     def id(self) -> int:
+        """Returns the entity's ID
+
+        Returns
+        -------
+        int
+            The entity's ID
+        """
         return self.__id
     
     @property
     def name(self) -> str:
+        """Returns the entity's name
+
+        Returns
+        -------
+        str
+            The entity's name
+        """
         return self.__name
 
 class Item:

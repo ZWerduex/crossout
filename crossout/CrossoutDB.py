@@ -26,9 +26,21 @@ class CrossoutDB:
     
     def item(self, item_id: int) -> Item:
         return Item(self.api.item(item_id))
+    
+    def _buildEntitySet(self, objects: set[dict]) -> set[Entity]:
+        return {Entity(o['id'], o['name']) for o in objects}
 
-    def factions(self) -> list[Entity]:
-        return [Entity(f['id'], f['name']) for f in self.api.factions()]
+    def rarities(self) -> set[Entity]:
+        return self._buildEntitySet(self.api.rarities())
+    
+    def categories(self) -> set[Entity]:
+        return self._buildEntitySet(self.api.categories())
+
+    def factions(self) -> set[Entity]:
+        return self._buildEntitySet(self.api.factions())
+    
+    def types(self) -> set[Entity]:
+        return self._buildEntitySet(self.api.types())
     
     def recipe(self, item: Item) -> Recipe:
         r = self.api.recipe(item.id)

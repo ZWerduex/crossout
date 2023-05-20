@@ -22,7 +22,7 @@ class CrossoutDBAPI:
         """
         self.base_url = base_url
 
-    def request(self, endpoint: str) -> typing.Any:
+    def request(self, endpoint: str) -> set[dict]:
         """Makes a request to the CrossoutDB API and returns the result in JSON format.
 
         Parameters
@@ -32,24 +32,35 @@ class CrossoutDBAPI:
 
         Returns
         -------
-        typing.Any
-            A dict or a list of dicts retrieved from the CrossoutDB API
+        set[dict]
+            A set of dicts retrieved from the CrossoutDB API. The set contains at least one dict.
 
         Raises
         ------
         HTTPError
             If the request failed
+        TypeError
+            If the response is not JSON
         """
         r = requests.get(self.base_url + endpoint)
         r.raise_for_status()
-        return r.json()
+        
+        s = set()
+        if isinstance((resp := r.json()), dict):
+            s.add(resp)
+        elif isinstance(resp, list):
+            for i in resp:
+                s.add(i)
+        else:
+            raise TypeError(f'Invalid response: {resp}')
+        return s
 
     def items(self,
             rarity: str | None = None,
             category: str | None = None,
             faction: str | None = None,
             query: str | None = None
-        ) -> list[dict]:
+        ) -> set[dict]:
         """Queries the CrossoutDB API for corresponding items by building an endpoint with GET parameters.
 
         Parameters
@@ -65,7 +76,7 @@ class CrossoutDBAPI:
 
         Returns
         -------
-        list[dict]
+        set[dict]
             The list of items returned by the API
         """
         params = {}
@@ -105,45 +116,45 @@ class CrossoutDBAPI:
         assert (l := len(data)) <= 1
         if l == 0:
             raise ValueError('Item with ID '+ str(item_id) +' does not exist.')
-        return data[0]
+        return data.pop()
     
-    def rarities(self) -> list[dict]:
+    def rarities(self) -> set[dict]:
         """Queries the CrossoutDB API for all available rarities.
 
         Returns
         -------
-        list[dict]
-            The list of rarities
+        set[dict]
+            The set of rarities
         """
         return self.request('rarities')
     
-    def categories(self) -> list[dict]:
+    def categories(self) -> set[dict]:
         """Queries the CrossoutDB API for all available item categories.
 
         Returns
         -------
-        list[dict]
-            The list of item categories
+        set[dict]
+            The set of item categories
         """
         return self.request('categories')
 
-    def factions(self) -> list[dict]:
+    def factions(self) -> set[dict]:
         """Queries the CrossoutDB API for all available factions.
 
         Returns
         -------
-        list[dict]
-            The list of factions
+        set[dict]
+            The set of factions
         """
         return self.request('factions')
     
-    def types(self) -> list[dict]:
+    def types(self) -> set[dict]:
         """Queries the CrossoutDB API for all available item types.
 
         Returns
         -------
-        list[dict]
-            The list of item types
+        set[dict]
+            The set of item types
         """
         return self.request('types')
     
@@ -165,7 +176,14 @@ class CrossoutDBAPI:
         ValueError
             If the recipe with the given ID does not exist
         """
-        data = self.request('recipe/' + str(item_id))["recipe"]
+        # Empty JSON response
+        if len(data := self.request('recipe/' + str(item_id))) <= 0:
+            raise ValueError('Recipe with ID '+ str(item_id) +' does not exist.')
+        
+        data = data.pop()["recipe"]
+        
+        # Recipe data with no ingredients
         if len(data["ingredients"]) <= 0:
             raise ValueError('Recipe with ID '+ str(item_id) +' does not exist.')
+        
         return data
