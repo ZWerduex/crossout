@@ -35,23 +35,13 @@ class Entity:
         
     @property
     def id(self) -> int:
-        """Returns the entity's ID
-
-        Returns
-        -------
-        `int`
-            The entity's ID
+        """The entity's ID
         """
         return self.__id
     
     @property
     def name(self) -> str:
-        """Returns the entity's name
-
-        Returns
-        -------
-        `str`
-            The entity's name
+        """The entity's name
         """
         return self.__name
 
@@ -109,9 +99,6 @@ class Resource:
         else:
             return False
 
-    def __repr__(self) -> str:
-        return str(self.__dict__)
-
 class Workbench:
     """Represents a workbench in Crossout. A workbench is defined independently of any faction.
     It is not necessary to instantiate a workbench manually as
@@ -135,12 +122,7 @@ class Workbench:
 
     @property
     def fullName(self) -> str:
-        """Returns the workbench's full name, which is the workbench's name followed by 'Workbench'
-
-        Returns
-        -------
-        `str`
-            The workbench's full name
+        """The workbench's full name
         """
         return f'{self.name} Workbench'
 
@@ -194,10 +176,12 @@ class Workbenches:
 
 class Recipe:
     """Represents a recipe in Crossout, that is, a list of the objects required to craft an item.
-    A recipe is never linked to the item that can be crafted with it nor has any identifier,
-    and as such it is not possible to know which item can be crafted with a given recipe.
-    It should be linked to the item it can craft by the user of the library.
+    
     Recipes can be obtained from the `CrossoutDB` class and thus, should not be instantiated manually.
+    
+    A recipe is never linked to the item that can be crafted with it nor has any identifier,
+    and as such it is not possible to know which item can be crafted knowing only the recipe.
+    It should be linked to the item it crafts by the user of the library.
     """
 
     def __init__(self,
@@ -218,7 +202,7 @@ class Recipe:
         workbench : `Workbench`
             The workbench at which the item can be crafted
         faction : `Entity`
-            The faction's workbench at which the item can be crafted
+            The faction of the used workbench
         """
         self.items = items
         """A list of tuples of items and their respective quantities required to craft the item"""
@@ -227,4 +211,4 @@ class Recipe:
         self.workbench = workbench
         """The workbench at which the item can be crafted"""
         self.faction = faction
-        """The faction's workbench at which the item can be crafted"""
+        """The faction of the used workbench"""

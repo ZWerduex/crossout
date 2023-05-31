@@ -17,30 +17,35 @@ class CrossoutDB:
             faction: str | None = None,
             query: str | None = None
         ) -> list[Item]:
-        return [Item(item) for item in self.api.items(
+        s = self.api.items(
             rarity=rarity,
             category=category,
             faction=faction,
             query=query
-        )]
+        )
+        for i in s:
+            i['imagePath'] = self.api.website_url + i['imagePath']
+        return list(Item(i) for i in s)
     
     def item(self, item_id: int) -> Item:
-        return Item(self.api.item(item_id))
+        i = self.api.item(item_id)
+        i['imagePath'] = self.api.website_url + i['imagePath']
+        return Item(i)
     
-    def _buildEntitySet(self, objects: set[dict]) -> set[Entity]:
-        return {Entity(o['id'], o['name']) for o in objects}
+    def __buildEntityList(self, objects: list[dict]) -> list[Entity]:
+        return list(Entity(o['id'], o['name']) for o in objects)
 
-    def rarities(self) -> set[Entity]:
-        return self._buildEntitySet(self.api.rarities())
+    def rarities(self) -> list[Entity]:
+        return self.__buildEntityList(self.api.rarities())
     
-    def categories(self) -> set[Entity]:
-        return self._buildEntitySet(self.api.categories())
+    def categories(self) -> list[Entity]:
+        return self.__buildEntityList(self.api.categories())
 
-    def factions(self) -> set[Entity]:
-        return self._buildEntitySet(self.api.factions())
+    def factions(self) -> list[Entity]:
+        return self.__buildEntityList(self.api.factions())
     
-    def types(self) -> set[Entity]:
-        return self._buildEntitySet(self.api.types())
+    def types(self) -> list[Entity]:
+        return self.__buildEntityList(self.api.types())
     
     def recipe(self, item: Item) -> Recipe:
         r = self.api.recipe(item.id)
@@ -48,7 +53,7 @@ class CrossoutDB:
 
         items = []
         resources = []
-        workbench = Workbenches.fromName(item.rarity.name)
+        workbench = Workbenches.fromRarityName(item.rarity.name)
         
         for ing in r['ingredients']:
             if ing['item']['categoryName'] == 'Resources':
