@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crossout"
+version = "1.0.0"
+authors = [
+  { name="Z-WX", email="" },
+]
+description = "Python package using the API of CrossoutDB"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/ZWerduex/crossout"
+"Bug Tracker" = "https://github.com/ZWerduex/crossout/issues"
