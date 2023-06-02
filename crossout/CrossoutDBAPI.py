@@ -9,6 +9,8 @@ __all__ = ['CrossoutDBAPI']
 class CrossoutDBAPI:
     """
     Low-level class that retrieves raw data as JSON from the CrossoutDB API.
+    
+    Requires an internet connection.
     """
 
     def __init__(self, website_url: str = 'https://crossoutdb.com', api_endpoint: str = '/api/v1/') -> None:
@@ -60,7 +62,7 @@ class CrossoutDBAPI:
         elif isinstance(resp, list):
             s.extend(resp)
         else:
-            raise TypeError(f'Invalid response: {resp}')
+            raise TypeError(f'Invalid response : {resp}')
         return s
 
     def items(self,
@@ -69,7 +71,7 @@ class CrossoutDBAPI:
             faction: str | None = None,
             query: str | None = None
         ) -> list[dict]:
-        """Queries the CrossoutDB API for corresponding items by building an endpoint with GET parameters.
+        """Queries the CrossoutDB API for corresponding items
 
         Parameters
         ----------
@@ -184,14 +186,16 @@ class CrossoutDBAPI:
         `ValueError`
             If the recipe with the given ID does not exist
         """
+        err = ValueError('Recipe with ID '+ str(item_id) +' does not exist.')
+
         # Empty JSON response
         if len(data := self.request('recipe/' + str(item_id))) <= 0:
-            raise ValueError('Recipe with ID '+ str(item_id) +' does not exist.')
+            raise err
         
         data = data[0]["recipe"]
         
         # Recipe data with no ingredients
         if len(data["ingredients"]) <= 0:
-            raise ValueError('Recipe with ID '+ str(item_id) +' does not exist.')
+            raise err
         
         return data
