@@ -1,6 +1,6 @@
 # Crossout Python package
 
-The `crossout` Python package is a Python library for interacting with the Crossout API provided by the [CrossoutDB website](https://crossoutdb.com). It is designed to be simple to use and gives general information about the game items.
+The `crossout` Python package is a Python library for interacting with the Crossout API provided by the [CrossoutDB website](https://crossoutdb.com). It is designed to be simple to use and gives general information about the game items. As it is based on a third party API, data may be outdated or missing.
 
 > **Note :** At the moment, the package does not provide information about the market state and item prices.
 
