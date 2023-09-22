@@ -36,9 +36,7 @@ name = db.item(1050).name
 # name = "ZS-33 Hulk"
 ```
 
-## Roadmap
-
-In order of priority :
+## Possible enhancements
 
 - Make documentation
 - Consider adding option to scrap additionnal data from the website if possible
