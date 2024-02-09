@@ -2,7 +2,7 @@
 
 The `crossout` Python package is a Python library for interacting with the Crossout API provided by the [CrossoutDB website](https://crossoutdb.com). It is designed to be simple to use and gives general information about the game items. As it is based on a third party API, data may be outdated or missing.
 
-> **Note :** At the moment, the package does not provide information about the market state and item prices.
+> **Note :** The package does not provide information about the market state and item prices.
 
 > **Note :** This package is not affiliated with CrossoutDB, Targem Games or Gaijin Enternaiment in any way.
 
@@ -38,8 +38,10 @@ name = db.item(1050).name
 
 ## Possible enhancements
 
-- Make documentation
-- Consider adding option to scrap additionnal data from the website if possible
+As I have made this very basic package to learn how to deal with posting packages on PyPi, I do not plan to work on the project in the future. Despite that, one can think of those following possible enhancements :
+
+- Generate documentation files
+- Consider adding option to scrap additionnal data from the website if allowed to
 - Add support for item prices
 - Add support for market data
 
